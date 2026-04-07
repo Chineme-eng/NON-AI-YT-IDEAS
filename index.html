@@ -1,1 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Picao AI - Content Vault</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
+        :root {
+            --bg-cream: #FAF9F6;
+            --text-black: #1A1A1A;
+            --text-light: #4A4A4A;
+            --border-color: #E5E5E5;
+            
+            /* Placeholder Accent Colors for Differentiation */
+            --color-web: #D35400; /* Burnt Orange */
+            --color-tech: #2980B9; /* Strong Blue */
+            --color-prod: #27AE60; /* Emerald Green */
+            
+            --diff-easy: #10B981;
+            --diff-med-easy: #F59E0B;
+            --diff-med: #EF4444;
+        }
+
+        body {
+            background-color: var(--bg-cream);
+            color: var(--text-black);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        p.subtitle {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .filters {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        button.filter-btn {
+            background-color: transparent;
+            border: 2px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            color: var(--text-black);
+            transition: all 0.2s ease;
+        }
+
+        button.filter-btn:hover, button.filter-btn.active {
+            border-color: var(--text-black);
+            background-color: var(--text-black);
+            color: var(--bg-cream);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: white;
+        }
+
+        .badge.web { background-color: var(--color-web); }
+        .badge.tech { background-color: var(--color-tech); }
+        .badge.productivity { background-color: var(--color-prod); }
+
+        .difficulty {
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .diff-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .diff-easy { color: var(--diff-easy); }
+        .diff-easy .diff-dot { background-color: var(--diff-easy); }
+        
+        .diff-med-easy { color: var(--diff-med-easy); }
+        .diff-med-easy .diff-dot { background-color: var(--diff-med-easy); }
+        
+        .diff-med { color: var(--diff-med); }
+        .diff-med .diff-dot { background-color: var(--diff-med); }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 0 0 10px 0;
+            line-height: 1.3;
+        }
+
+        .card-desc {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .card-meta {
+            font-size: 0.85rem;
+            background-color: var(--bg-cream);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .meta-row {
+            display: flex;
+            margin-bottom: 5px;
+        }
+        
+        .meta-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .meta-label {
+            font-weight: 700;
+            width: 60px;
+            color: var(--text-black);
+        }
+
+        .meta-value {
+            color: var(--text-light);
+            flex: 1;
+        }
+
+        .card-link {
+            display: inline-block;
+            text-align: center;
+            padding: 10px;
+            background-color: var(--text-black);
+            color: var(--bg-cream);
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: opacity 0.2s;
+        }
+
+        .card-link:hover {
+            opacity: 0.8;
+        }
+
+        .card-link.disabled {
+            background-color: var(--border-color);
+            color: var(--text-light);
+            pointer-events: none;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>YouTube Content Vault</h1>
+        <p class="subtitle">A curated collection of highly actionable, software-focused video ideas for Web, Tech, and Productivity.</p>
+    </header>
+
+    <div class="filters">
+        <button class="filter-btn active" data-filter="all">All Ideas</button>
+        <button class="filter-btn" data-filter="WEB">Web & Tools</button>
+        <button class="filter-btn" data-filter="TECH">Tech Fixes</button>
+        <button class="filter-btn" data-filter="PRODUCTIVITY">Productivity</button>
+    </div>
+
+    <div class="grid" id="vault-grid">
+        </div>
+</div>
+
+<script>
+    // To reach 350 ideas, you can continue copying this exact object format below.
+    const vaultData = [
+        // --- WEB CATEGORY ---
+        {
+            title: "10 Free Websites That Feel Illegal to Know",
+            category: "WEB",
+            difficulty: "Easy",
+            diffClass: "diff-easy",
+            desc: "A rapid-fire showcase of incredibly useful, hidden-gem web applications that solve everyday problems for free, like removing backgrounds or converting files.",
+            tools: "OBS Studio, Web Browser",
+            link: "https://tinywow.com"
+        },
+        {
+            title: "5 Websites That Will Save You Hours",
+            category: "WEB",
+            difficulty: "Easy",
+            diffClass: "diff-easy",
+            desc: "Walkthrough of productivity web apps designed to automate boring tasks, focusing on visual templates and PDF management.",
+            tools: "OBS Studio",
+            link: "https://pdf24.org"
+        },
+        {
+            title: "How to use Canva for beginners",
+            category: "WEB",
+            difficulty: "Easy",
+            diffClass: "diff-easy",
+            desc: "A complete step-by-step guide to navigating the Canva interface, selecting dimensions, and making your first YouTube thumbnail.",
+            tools: "Canva, Screen Recording",
+            link: "https://canva.com"
+        },
+        {
+            title: "How to build a website for free (No Coding)",
+            category: "WEB",
+            difficulty: "Medium Easy",
+            diffClass: "diff-med-easy",
+            desc: "Creating a stunning one-page personal portfolio in under 20 minutes using a free drag-and-drop site builder.",
+            tools: "Carrd",
+            link: "https://carrd.co"
+        },
+        {
+            title: "How to use Google Drive properly",
+            category: "WEB",
+            difficulty: "Easy",
+            diffClass: "diff-easy",
+            desc: "Stop the digital clutter. A tutorial on color-coding folders, mastering sharing permissions, and setting up offline mode.",
+            tools: "Google Drive workspace",
+            link: "https://drive.google.com"
+        },
+        {
+            title: "How to create a standout resume using Canva",
+            category: "WEB",
+            difficulty: "Easy",
+            diffClass: "diff-easy",
+            desc: "Transforming a boring Word document into a sleek, ATS-friendly visual resume using free templates.",
+            tools: "Canva",
+            link: "https://canva.com"
+        },
+        {
+            title: "Top 3 Free Photo Editors in your Browser",
+            category: "WEB",
+            difficulty: "Medium",
+            diffClass: "diff-med",
+            desc: "A comparison and mini-tutorial of the best browser-based Photoshop alternatives for quick edits.",
+            tools: "Photopea",
+            link: "https://photopea.com"
+        },
+        {
+            title: "How to find alternative software for expensive apps",
+            category: "WEB",
+            difficulty: "Easy",
+            diffClass: "diff-easy",
+            desc: "Showing viewers how to use crowdsourced databases to find free, open-source alternatives to Adobe and Microsoft products.",
+            tools: "AlternativeTo",
+            link: "https://alternativeto.net"
+        },
+        {
+            title: "How to read paywalled articles for free (Legally)",
+            category: "WEB",
+            difficulty: "Easy",
+            diffClass: "diff-easy",
+            desc: "Using web archive tools to access information for student research without hitting annoying subscription blockers.",
+            tools: "Archive.ph",
+            link: "https://archive.ph"
+        },
+        {
+            title: "The Ultimate Guide to Browser Extensions",
+            category: "WEB",
+            difficulty: "Medium Easy",
+            diffClass: "diff-med-easy",
+            desc: "Installing and managing the top 5 extensions for ad-blocking, grammar checking, and video speed control.",
+            tools: "Chrome Web Store, uBlock Origin",
+            link: "https://chromewebstore.google.com"
+        },
+
+        // --- TECH CATEGORY ---
+        {
+            title: "How to speed up your laptop (Windows 11)",
+            category: "TECH",
+            difficulty: "Medium",
+            diffClass: "diff-med",
+            desc: "A deep dive into optimizing Windows 11 by disabling heavy startup apps, modifying visual effects, and tweaking power plans.",
+            tools: "Windows Task Manager, Settings",
+            link: "None"
+        },
+        {
+            title: "Fix slow Wi-Fi on your PC (easy fix)",
+            category: "TECH",
+            difficulty: "Medium Easy",
+            diffClass: "diff-med-easy",
+            desc: "How to change your computer's DNS servers to Cloudflare to instantly improve browsing speed and reliability.",
+            tools: "Windows Network Settings",
+            link: "https://1.1.1.1"
+        },
+        {
+            title: "How to free up storage instantly",
+            category: "TECH",
+            difficulty: "Easy",
+            diffClass: "diff-easy",
+            desc: "Using built-in Windows tools to safely wipe temporary files, previous update installations, and empty the cache.",
+            tools: "Windows Storage Sense",
+            link: "None"
+        },
+        {
+            title: "Why your laptop is lagging (fix it now)",
+            category: "TECH",
+            difficulty: "Medium",
+            diffClass: "diff-med",
+            desc: "How to diagnose high CPU/RAM usage using monitoring software, and how to spot thermal throttling on a laptop.",
+            tools: "HWMonitor, Task Manager",
+            link: "https://www.cpuid.com/softwares/hwmonitor.html"
+        },
+        {
+            title: "How to stop apps from running in background",
+            category: "TECH",
+            difficulty: "Easy",
+            diffClass: "diff-easy",
+            desc: "A quick privacy and battery-saving tutorial on stopping unnecessary applications from hogging resources invisibly.",
+            tools: "Windows Settings",
+            link: "None"
+        },
+        {
+            title: "How to reduce overheating on your laptop",
+            category: "TECH",
+            difficulty: "Medium",
+            diffClass: "diff-med",
+            desc: "Software tweaks to limit processor power states, combined with practical advice on airflow and laptop stands.",
+            tools: "Windows Power Options",
+            link: "None"
+        },
+        {
+            title: "Update your drivers the safe way",
+            category: "TECH",
+            difficulty: "Medium Easy",
+            diffClass: "diff-med-easy",
+            desc: "Why you shouldn't use sketchy 'driver updater' tools, and how to properly download drivers directly from manufacturers.",
+            tools: "Device Manager",
+            link: "None"
+        },
+        {
+            title: "How to completely uninstall stubborn programs",
+            category: "TECH",
+            difficulty: "Medium Easy",
+            diffClass: "diff-med-easy",
+            desc: "Removing bloatware and leftover registry files from apps that refuse to uninstall using standard methods.",
+            tools: "Revo Uninstaller Free",
+            link: "https://www.revouninstaller.com"
+        },
+        {
+            title: "How to fix a corrupted USB drive",
+            category: "TECH",
+            difficulty: "Medium",
+            diffClass: "diff-med",
+            desc: "Using the Windows Command Prompt (diskpart) to rescue and reformat a USB drive that won't show up normally.",
+            tools: "Command Prompt (CMD)",
+            link: "None"
+        },
+        {
+            title: "Extend your laptop battery life by 50%",
+            category: "TECH",
+            difficulty: "Easy",
+            diffClass: "diff-easy",
+            desc: "Creating a custom battery profile, dimming specific display elements, and turning off background syncing.",
+            tools: "Windows Battery Settings",
+            link: "None"
+        },
+
+        // --- PRODUCTIVITY CATEGORY ---
+        {
+            title: "How to organize your life with Notion",
+            category: "PRODUCTIVITY",
+            difficulty: "Medium",
+            diffClass: "diff-med",
+            desc: "Building a personal 'second brain' dashboard from scratch, utilizing databases, linked views, and calendar blocks.",
+            tools: "Notion",
+            link: "https://notion.so"
+        },
+        {
+            title: "My free productivity system (step by step)",
+            category: "PRODUCTIVITY",
+            difficulty: "Medium Easy",
+            diffClass: "diff-med-easy",
+            desc: "A workflow video showing how to seamlessly connect a digital to-do list with a calendar for ultimate daily organization.",
+            tools: "Google Calendar, Todoist",
+            link: "https://todoist.com"
+        },
+        {
+            title: "Best apps for students (free only)",
+            category: "PRODUCTIVITY",
+            difficulty: "Easy",
+            diffClass: "diff-easy",
+            desc: "Curating the absolute best free software for flashcards, citation generation, and focused studying sessions.",
+            tools: "Anki, Zotero",
+            link: "https://apps.ankiweb.net"
+        },
+        {
+            title: "How to manage your time better",
+            category: "PRODUCTIVITY",
+            difficulty: "Easy",
+            diffClass: "diff-easy",
+            desc: "A guide on implementing the Pomodoro technique digitally to stop procrastination and avoid academic burnout.",
+            tools: "Pomofocus",
+            link: "https://pomofocus.io"
+        },
+        {
+            title: "How to take notes that actually work",
+            category: "PRODUCTIVITY",
+            difficulty: "Medium",
+            diffClass: "diff-med",
+            desc: "Moving away from linear Word documents to linked, markdown-based note-taking for better retention and essay writing.",
+            tools: "Obsidian",
+            link: "https://obsidian.md"
+        },
+        {
+            title: "How to stay organized digitally",
+            category: "PRODUCTIVITY",
+            difficulty: "Medium Easy",
+            diffClass: "diff-med-easy",
+            desc: "A framework for the 'Inbox Zero' method for emails, and standardizing file naming conventions on your desktop.",
+            tools: "Gmail, File Explorer",
+            link: "None"
+        },
+        {
+            title: "Track your habits effortlessly",
+            category: "PRODUCTIVITY",
+            difficulty: "Easy",
+            diffClass: "diff-easy",
+            desc: "Setting up a simple, visually satisfying digital habit tracker to build consistency in daily routines.",
+            tools: "Loop Habit Tracker",
+            link: "https://loophabits.org"
+        },
+        {
+            title: "Stop forgetting things: The GTD Method",
+            category: "PRODUCTIVITY",
+            difficulty: "Medium",
+            diffClass: "diff-med",
+            desc: "An introduction to the 'Getting Things Done' capture method using minimalist cross-platform task managers.",
+            tools: "TickTick",
+            link: "https://ticktick.com"
+        },
+        {
+            title: "Block distractions on your computer",
+            category: "PRODUCTIVITY",
+            difficulty: "Easy",
+            diffClass: "diff-easy",
+            desc: "Using strict website blockers during study hours to completely eliminate the temptation of social media.",
+            tools: "Cold Turkey Blocker",
+            link: "https://getcoldturkey.com"
+        },
+        {
+            title: "Mind mapping for complex projects",
+            category: "PRODUCTIVITY",
+            difficulty: "Medium Easy",
+            diffClass: "diff-med-easy",
+            desc: "Using digital whiteboards to visually break down overwhelming assignments into actionable steps.",
+            tools: "Miro",
+            link: "https://miro.com"
+        }
+    ];
+
+    const grid = document.getElementById('vault-grid');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+
+    function renderCards(filter) {
+        grid.innerHTML = '';
+        const filteredData = filter === 'all' 
+            ? vaultData 
+            : vaultData.filter(item => item.category === filter);
+
+        filteredData.forEach(item => {
+            const hasLink = item.link !== "None";
+            const linkHtml = hasLink 
+                ? `<a href="${item.link}" target="_blank" class="card-link">Visit Resource &rarr;</a>`
+                : `<a href="#" class="card-link disabled">No Link Required</a>`;
+
+            const cardHtml = `
+                <div class="card">
+                    <div class="card-header">
+                        <span class="badge ${item.category.toLowerCase()}">${item.category}</span>
+                        <div class="difficulty ${item.diffClass}">
+                            <div class="diff-dot"></div>
+                            ${item.difficulty}
+                        </div>
+                    </div>
+                    <h3 class="card-title">${item.title}</h3>
+                    <p class="card-desc">${item.desc}</p>
+                    <div class="card-meta">
+                        <div class="meta-row">
+                            <span class="meta-label">Tools:</span>
+                            <span class="meta-value">${item.tools}</span>
+                        </div>
+                    </div>
+                    ${linkHtml}
+                </div>
+            `;
+            grid.insertAdjacentHTML('beforeend', cardHtml);
+        });
+    }
+
+    // Filter Logic
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderCards(btn.getAttribute('data-filter'));
+        });
+    });
+
+    // Initial Render
+    renderCards('all');
+</script>
+
+</body>
+</html>
