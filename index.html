@@ -3,25 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Picao AI - Content Vault</title>
+    <title>Content Vault - Flat UI</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
         :root {
             --bg-cream: #FAF9F6;
             --text-black: #1A1A1A;
-            --text-light: #4A4A4A;
-            --border-color: #E5E5E5;
+            --text-gray: #555555;
+            --border-color: #D1D1D1;
             
-            /* Placeholder Accent Colors for Differentiation */
-            --color-web: #D35400; /* Burnt Orange */
-            --color-tech: #2980B9; /* Strong Blue */
-            --color-prod: #27AE60; /* Emerald Green */
-            
-            --diff-easy: #10B981;
-            --diff-med-easy: #F59E0B;
-            --diff-med: #EF4444;
+            --cat-web: #E67E22;
+            --cat-tech: #2980B9;
+            --cat-prod: #27AE60;
         }
+
+        * { box-sizing: border-box; }
 
         body {
             background-color: var(--bg-cream);
@@ -29,528 +26,595 @@
             font-family: 'Inter', sans-serif;
             margin: 0;
             padding: 40px 20px;
-            line-height: 1.6;
+            line-height: 1.5;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
         header {
-            text-align: center;
-            margin-bottom: 50px;
+            border-bottom: 2px solid var(--text-black);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
         }
 
         h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+            font-size: 2rem;
+            margin: 0;
             font-weight: 700;
             letter-spacing: -0.5px;
         }
 
-        p.subtitle {
-            color: var(--text-light);
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin: 0 auto;
+        .stats {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-gray);
         }
 
         .filters {
             display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
         }
 
         button.filter-btn {
-            background-color: transparent;
-            border: 2px solid var(--border-color);
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
-            color: var(--text-black);
-            transition: all 0.2s ease;
-        }
-
-        button.filter-btn:hover, button.filter-btn.active {
-            border-color: var(--text-black);
-            background-color: var(--text-black);
-            color: var(--bg-cream);
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 25px;
-        }
-
-        .card {
-            background: #FFFFFF;
+            background: none;
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            display: flex;
-            flex-direction: column;
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-gray);
+            cursor: pointer;
+            border-radius: 4px;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        button.filter-btn.active {
+            background: var(--text-black);
+            color: var(--bg-cream);
+            border-color: var(--text-black);
         }
 
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 15px;
+        .list-container {
+            border-top: 1px solid var(--border-color);
+        }
+
+        .row {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .row-header {
+            display: grid;
+            grid-template-columns: 120px 1fr 100px;
+            align-items: center;
+            padding: 16px 0;
+            cursor: pointer;
+            gap: 15px;
+        }
+
+        .row-header:hover .title {
+            text-decoration: underline;
         }
 
         .badge {
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            padding: 3px 8px;
+            border-radius: 3px;
             color: white;
+            text-align: center;
+            letter-spacing: 0.5px;
         }
 
-        .badge.web { background-color: var(--color-web); }
-        .badge.tech { background-color: var(--color-tech); }
-        .badge.productivity { background-color: var(--color-prod); }
+        .badge.web { background-color: var(--cat-web); }
+        .badge.tech { background-color: var(--cat-tech); }
+        .badge.productivity { background-color: var(--cat-prod); }
+
+        .title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin: 0;
+        }
 
         .difficulty {
             font-size: 0.8rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 5px;
+            font-weight: 500;
+            color: var(--text-gray);
+            text-align: right;
         }
 
-        .diff-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
+        .row-details {
+            display: none;
+            padding: 0 0 20px 135px; /* Aligns with title */
         }
 
-        .diff-easy { color: var(--diff-easy); }
-        .diff-easy .diff-dot { background-color: var(--diff-easy); }
-        
-        .diff-med-easy { color: var(--diff-med-easy); }
-        .diff-med-easy .diff-dot { background-color: var(--diff-med-easy); }
-        
-        .diff-med { color: var(--diff-med); }
-        .diff-med .diff-dot { background-color: var(--diff-med); }
-
-        .card-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin: 0 0 10px 0;
-            line-height: 1.3;
+        .row.open .row-details {
+            display: block;
         }
 
-        .card-desc {
+        .desc {
             font-size: 0.95rem;
-            color: var(--text-light);
-            margin-bottom: 20px;
-            flex-grow: 1;
-        }
-
-        .card-meta {
-            font-size: 0.85rem;
-            background-color: var(--bg-cream);
-            padding: 12px;
-            border-radius: 8px;
+            color: var(--text-gray);
             margin-bottom: 15px;
+            max-width: 700px;
         }
 
-        .meta-row {
-            display: flex;
-            margin-bottom: 5px;
-        }
-        
-        .meta-row:last-child {
-            margin-bottom: 0;
+        .meta-grid {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 8px 15px;
+            font-size: 0.85rem;
+            background: #F0EFEA;
+            padding: 12px;
+            border-radius: 4px;
+            max-width: 700px;
         }
 
         .meta-label {
             font-weight: 700;
-            width: 60px;
             color: var(--text-black);
         }
 
-        .meta-value {
-            color: var(--text-light);
-            flex: 1;
-        }
-
-        .card-link {
-            display: inline-block;
-            text-align: center;
-            padding: 10px;
-            background-color: var(--text-black);
-            color: var(--bg-cream);
+        .meta-value a {
+            color: var(--cat-tech);
             text-decoration: none;
-            border-radius: 6px;
             font-weight: 600;
-            font-size: 0.9rem;
-            transition: opacity 0.2s;
         }
 
-        .card-link:hover {
-            opacity: 0.8;
+        .meta-value a:hover {
+            text-decoration: underline;
         }
 
-        .card-link.disabled {
-            background-color: var(--border-color);
-            color: var(--text-light);
-            pointer-events: none;
+        @media (max-width: 600px) {
+            .row-header {
+                grid-template-columns: 1fr;
+                gap: 5px;
+            }
+            .row-details {
+                padding: 0 0 20px 0;
+            }
+            .difficulty {
+                text-align: left;
+            }
         }
-
     </style>
 </head>
 <body>
 
 <div class="container">
     <header>
-        <h1>YouTube Content Vault</h1>
-        <p class="subtitle">A curated collection of highly actionable, software-focused video ideas for Web, Tech, and Productivity.</p>
+        <h1>Content Vault</h1>
+        <div class="stats" id="vault-stats">Loading ideas...</div>
     </header>
 
     <div class="filters">
-        <button class="filter-btn active" data-filter="all">All Ideas</button>
+        <button class="filter-btn active" data-filter="all">All</button>
         <button class="filter-btn" data-filter="WEB">Web & Tools</button>
         <button class="filter-btn" data-filter="TECH">Tech Fixes</button>
         <button class="filter-btn" data-filter="PRODUCTIVITY">Productivity</button>
     </div>
 
-    <div class="grid" id="vault-grid">
+    <div class="list-container" id="vault-list">
         </div>
 </div>
 
 <script>
-    // To reach 350 ideas, you can continue copying this exact object format below.
     const vaultData = [
-        // --- WEB CATEGORY ---
+        // --- WEB (Websites, Tools, Tutorials) ---
         {
-            title: "10 Free Websites That Feel Illegal to Know",
-            category: "WEB",
-            difficulty: "Easy",
-            diffClass: "diff-easy",
-            desc: "A rapid-fire showcase of incredibly useful, hidden-gem web applications that solve everyday problems for free, like removing backgrounds or converting files.",
-            tools: "OBS Studio, Web Browser",
-            link: "https://tinywow.com"
+            t: "10 Free Websites That Feel Illegal to Know",
+            c: "WEB", d: "Easy",
+            desc: "A rapid-fire showcase of incredibly useful, hidden-gem web applications that solve everyday problems for free. This video highlights tools for instantly removing video backgrounds without green screens, bulk-converting obscure file types, and accessing high-quality stock footage without attribution.",
+            tools: "TinyWow, Pexels", l: "https://tinywow.com"
         },
         {
-            title: "5 Websites That Will Save You Hours",
-            category: "WEB",
-            difficulty: "Easy",
-            diffClass: "diff-easy",
-            desc: "Walkthrough of productivity web apps designed to automate boring tasks, focusing on visual templates and PDF management.",
-            tools: "OBS Studio",
-            link: "https://pdf24.org"
+            t: "How to Build a Portfolio Website for Free in 20 Minutes",
+            c: "WEB", d: "Medium Easy",
+            desc: "A step-by-step, no-code tutorial aimed at freelancers and students. We walk through selecting a minimalist template, customizing text and image blocks, hooking up a custom contact form, and publishing the site to a free subdomain. Focuses on rapid deployment rather than custom coding.",
+            tools: "Carrd", l: "https://carrd.co"
         },
         {
-            title: "How to use Canva for beginners",
-            category: "WEB",
-            difficulty: "Easy",
-            diffClass: "diff-easy",
-            desc: "A complete step-by-step guide to navigating the Canva interface, selecting dimensions, and making your first YouTube thumbnail.",
-            tools: "Canva, Screen Recording",
-            link: "https://canva.com"
+            t: "The Best Free Alternatives to Adobe Premiere Pro",
+            c: "WEB", d: "Medium",
+            desc: "A deep-dive comparison of open-source and freemium video editors. Showcases the interface of each tool, testing them on a 4K video clip to evaluate rendering speed, color grading capabilities, and ease of use for beginners transitioning from basic editors.",
+            tools: "DaVinci Resolve, CapCut PC", l: "https://www.blackmagicdesign.com/products/davinciresolve"
         },
         {
-            title: "How to build a website for free (No Coding)",
-            category: "WEB",
-            difficulty: "Medium Easy",
-            diffClass: "diff-med-easy",
-            desc: "Creating a stunning one-page personal portfolio in under 20 minutes using a free drag-and-drop site builder.",
-            tools: "Carrd",
-            link: "https://carrd.co"
+            t: "Mastering Canva: 5 Hidden Features You Aren't Using",
+            c: "WEB", d: "Easy",
+            desc: "Moving beyond basic templates, this tutorial reveals Canva's advanced design features. Includes how to use the secret brand kit shortcuts, layering techniques for 3D text effects, utilizing the built-in bulk create tool for social media batches, and exporting assets with transparent backgrounds.",
+            tools: "Canva", l: "https://canva.com"
         },
         {
-            title: "How to use Google Drive properly",
-            category: "WEB",
-            difficulty: "Easy",
-            diffClass: "diff-easy",
-            desc: "Stop the digital clutter. A tutorial on color-coding folders, mastering sharing permissions, and setting up offline mode.",
-            tools: "Google Drive workspace",
-            link: "https://drive.google.com"
+            t: "How to Read Paywalled Articles Legally for Research",
+            c: "WEB", d: "Easy",
+            desc: "An educational guide for students and researchers on how to bypass soft paywalls using web archive directories and browser reading modes. Explains the mechanics of how cached web pages work and how to access public library digital databases from home.",
+            tools: "Archive.ph, 12ft Ladder", l: "https://archive.ph"
         },
         {
-            title: "How to create a standout resume using Canva",
-            category: "WEB",
-            difficulty: "Easy",
-            diffClass: "diff-easy",
-            desc: "Transforming a boring Word document into a sleek, ATS-friendly visual resume using free templates.",
-            tools: "Canva",
-            link: "https://canva.com"
+            t: "5 Extensions That Completely Change How You Browse",
+            c: "WEB", d: "Easy",
+            desc: "A curated list of browser extensions focused on utility rather than gimmicks. Covers a picture-in-picture enabler for all video sites, an extension that automatically finds and applies coupon codes, a heavy-duty tracker blocker, and a tool that dark-modes every website uniformly.",
+            tools: "Chrome Web Store, Dark Reader", l: "https://darkreader.org"
         },
         {
-            title: "Top 3 Free Photo Editors in your Browser",
-            category: "WEB",
-            difficulty: "Medium",
-            diffClass: "diff-med",
-            desc: "A comparison and mini-tutorial of the best browser-based Photoshop alternatives for quick edits.",
-            tools: "Photopea",
-            link: "https://photopea.com"
+            t: "How to Create a Professional Resume Using Figma",
+            c: "WEB", d: "Medium",
+            desc: "Teaching viewers how to use a UI/UX design tool to create a pixel-perfect, highly unique resume. Covers setting up an A4 artboard, using auto-layout for perfectly spaced experience sections, and exporting a clean, ATS-readable PDF.",
+            tools: "Figma", l: "https://figma.com"
         },
         {
-            title: "How to find alternative software for expensive apps",
-            category: "WEB",
-            difficulty: "Easy",
-            diffClass: "diff-easy",
-            desc: "Showing viewers how to use crowdsourced databases to find free, open-source alternatives to Adobe and Microsoft products.",
-            tools: "AlternativeTo",
-            link: "https://alternativeto.net"
+            t: "The Ultimate Guide to Google Drive Organization",
+            c: "WEB", d: "Easy",
+            desc: "A system-level approach to digital clutter. Demonstrates establishing a universal folder naming convention, utilizing color codes for project urgency, setting up workspace shortcuts, and managing shared drive permissions to avoid accidental public access.",
+            tools: "Google Drive", l: "https://drive.google.com"
         },
         {
-            title: "How to read paywalled articles for free (Legally)",
-            category: "WEB",
-            difficulty: "Easy",
-            diffClass: "diff-easy",
-            desc: "Using web archive tools to access information for student research without hitting annoying subscription blockers.",
-            tools: "Archive.ph",
-            link: "https://archive.ph"
+            t: "Browser-Based Photoshop: How to Edit Photos Anywhere",
+            c: "WEB", d: "Medium Easy",
+            desc: "A comprehensive walkthrough of a powerful web-based image editor that mimics Photoshop. Shows how to use the clone stamp tool, apply adjustment layers, and save projects as PSD files completely within a standard web browser.",
+            tools: "Photopea", l: "https://photopea.com"
         },
         {
-            title: "The Ultimate Guide to Browser Extensions",
-            category: "WEB",
-            difficulty: "Medium Easy",
-            diffClass: "diff-med-easy",
-            desc: "Installing and managing the top 5 extensions for ad-blocking, grammar checking, and video speed control.",
-            tools: "Chrome Web Store, uBlock Origin",
-            link: "https://chromewebstore.google.com"
-        },
-
-        // --- TECH CATEGORY ---
-        {
-            title: "How to speed up your laptop (Windows 11)",
-            category: "TECH",
-            difficulty: "Medium",
-            diffClass: "diff-med",
-            desc: "A deep dive into optimizing Windows 11 by disabling heavy startup apps, modifying visual effects, and tweaking power plans.",
-            tools: "Windows Task Manager, Settings",
-            link: "None"
+            t: "Find Open Source Alternatives to Any Expensive Software",
+            c: "WEB", d: "Easy",
+            desc: "A guide on navigating crowdsourced software databases. Shows the exact search filters needed to find free, privacy-respecting, open-source replacements for expensive subscriptions like Microsoft Office, Adobe Creative Cloud, and AutoCAD.",
+            tools: "AlternativeTo", l: "https://alternativeto.net"
         },
         {
-            title: "Fix slow Wi-Fi on your PC (easy fix)",
-            category: "TECH",
-            difficulty: "Medium Easy",
-            diffClass: "diff-med-easy",
-            desc: "How to change your computer's DNS servers to Cloudflare to instantly improve browsing speed and reliability.",
-            tools: "Windows Network Settings",
-            link: "https://1.1.1.1"
+            t: "How to Automate Your Life with Zapier (Beginner Guide)",
+            c: "WEB", d: "Medium",
+            desc: "An introduction to web automation. Walks through creating a 'Zap' that automatically saves Gmail attachments to a specific Google Drive folder, and another that sends a Discord notification when a specific YouTube channel uploads.",
+            tools: "Zapier", l: "https://zapier.com"
         },
         {
-            title: "How to free up storage instantly",
-            category: "TECH",
-            difficulty: "Easy",
-            diffClass: "diff-easy",
-            desc: "Using built-in Windows tools to safely wipe temporary files, previous update installations, and empty the cache.",
-            tools: "Windows Storage Sense",
-            link: "None"
+            t: "Design a Custom Link-in-Bio Page for Free",
+            c: "WEB", d: "Medium Easy",
+            desc: "Bypassing paid Linktree subscriptions by building a custom, highly interactive landing page. Shows how to embed Spotify playlists, YouTube videos, and dynamic social buttons using a free web builder.",
+            tools: "Bento", l: "https://bento.me"
         },
         {
-            title: "Why your laptop is lagging (fix it now)",
-            category: "TECH",
-            difficulty: "Medium",
-            diffClass: "diff-med",
-            desc: "How to diagnose high CPU/RAM usage using monitoring software, and how to spot thermal throttling on a laptop.",
-            tools: "HWMonitor, Task Manager",
-            link: "https://www.cpuid.com/softwares/hwmonitor.html"
+            t: "How to Use Webflow for Complete Beginners",
+            c: "WEB", d: "Medium",
+            desc: "Demystifying the complex visual development interface of Webflow. Explains the CSS box model in visual terms, how to structure div blocks, and how to publish a responsive one-page site without writing HTML.",
+            tools: "Webflow", l: "https://webflow.com"
         },
         {
-            title: "How to stop apps from running in background",
-            category: "TECH",
-            difficulty: "Easy",
-            diffClass: "diff-easy",
-            desc: "A quick privacy and battery-saving tutorial on stopping unnecessary applications from hogging resources invisibly.",
-            tools: "Windows Settings",
-            link: "None"
+            t: "Best Free Font Libraries for Creators",
+            c: "WEB", d: "Easy",
+            desc: "Exploring typography resources beyond standard system fonts. Shows where to find commercially free fonts, how to pair a serif header with a sans-serif body, and how to install them on both Windows and Mac.",
+            tools: "Google Fonts, Fontshare", l: "https://fontshare.com"
         },
         {
-            title: "How to reduce overheating on your laptop",
-            category: "TECH",
-            difficulty: "Medium",
-            diffClass: "diff-med",
-            desc: "Software tweaks to limit processor power states, combined with practical advice on airflow and laptop stands.",
-            tools: "Windows Power Options",
-            link: "None"
+            t: "How to Create 3D Graphics in Your Browser",
+            c: "WEB", d: "Medium",
+            desc: "An introduction to browser-based 3D modeling. Shows how to create a simple 3D glass icon, apply lighting and materials, and export it as a high-resolution PNG for use in website designs or thumbnails.",
+            tools: "Spline", l: "https://spline.design"
         },
         {
-            title: "Update your drivers the safe way",
-            category: "TECH",
-            difficulty: "Medium Easy",
-            diffClass: "diff-med-easy",
-            desc: "Why you shouldn't use sketchy 'driver updater' tools, and how to properly download drivers directly from manufacturers.",
-            tools: "Device Manager",
-            link: "None"
+            t: "Learn to Code for Free: The Best Interactive Sites",
+            c: "WEB", d: "Easy",
+            desc: "A review of the top platforms for learning Python and JavaScript. Compares the teaching styles of text-based interactive lessons versus video tutorials, and shows how to set up a free coding environment in the browser.",
+            tools: "freeCodeCamp, Replit", l: "https://www.freecodecamp.org"
         },
         {
-            title: "How to completely uninstall stubborn programs",
-            category: "TECH",
-            difficulty: "Medium Easy",
-            diffClass: "diff-med-easy",
-            desc: "Removing bloatware and leftover registry files from apps that refuse to uninstall using standard methods.",
-            tools: "Revo Uninstaller Free",
-            link: "https://www.revouninstaller.com"
+            t: "How to Host a Website Completely for Free",
+            c: "WEB", d: "Medium",
+            desc: "A technical tutorial on deploying static HTML/CSS websites using modern hosting platforms. Explains the difference between a domain registrar and a host, and how to connect a custom domain to a free hosting tier.",
+            tools: "Netlify, GitHub Pages", l: "https://netlify.com"
         },
         {
-            title: "How to fix a corrupted USB drive",
-            category: "TECH",
-            difficulty: "Medium",
-            diffClass: "diff-med",
-            desc: "Using the Windows Command Prompt (diskpart) to rescue and reformat a USB drive that won't show up normally.",
-            tools: "Command Prompt (CMD)",
-            link: "None"
+            t: "Top 5 Free AI Writing Assistants (That Aren't ChatGPT)",
+            c: "WEB", d: "Easy",
+            desc: "Exploring specialized AI writing tools designed for specific tasks like academic paraphrasing, SEO blog outlining, and creative story generation. Discusses the ethical use of these tools in academic settings.",
+            tools: "QuillBot, Rytr", l: "https://quillbot.com"
         },
         {
-            title: "Extend your laptop battery life by 50%",
-            category: "TECH",
-            difficulty: "Easy",
-            diffClass: "diff-easy",
-            desc: "Creating a custom battery profile, dimming specific display elements, and turning off background syncing.",
-            tools: "Windows Battery Settings",
-            link: "None"
+            t: "How to Compress Large Files Without Losing Quality",
+            c: "WEB", d: "Easy",
+            desc: "A guide on optimizing digital assets. Shows how to use browser-based tools to shrink 10MB images down to 500KB for faster website loading, and how to compress heavy PDF portfolios for email attachments.",
+            tools: "Squoosh, IlovePDF", l: "https://squoosh.app"
+        },
+        {
+            t: "The Best Free Vector Graphic Editors",
+            c: "WEB", d: "Medium Easy",
+            desc: "A tutorial on creating scalable graphics (SVG) without Adobe Illustrator. Demonstrates how to use the pen tool, manipulate anchor points, and create a custom logo using a powerful open-source desktop and web app.",
+            tools: "Inkscape, Vectornator", l: "https://inkscape.org"
         },
 
-        // --- PRODUCTIVITY CATEGORY ---
+        // --- TECH (Fixes, Speed, Optimization) ---
         {
-            title: "How to organize your life with Notion",
-            category: "PRODUCTIVITY",
-            difficulty: "Medium",
-            diffClass: "diff-med",
-            desc: "Building a personal 'second brain' dashboard from scratch, utilizing databases, linked views, and calendar blocks.",
-            tools: "Notion",
-            link: "https://notion.so"
+            t: "How to Speed Up Your Laptop (Windows 11 Deep Clean)",
+            c: "TECH", d: "Medium",
+            desc: "A comprehensive optimization guide going beyond the basics. Covers disabling unnecessary telemetry services, modifying advanced system settings for best performance, debloating the start menu, and using Task Manager to brutally cut down startup impact.",
+            tools: "Windows Settings, Task Manager", l: "None"
         },
         {
-            title: "My free productivity system (step by step)",
-            category: "PRODUCTIVITY",
-            difficulty: "Medium Easy",
-            diffClass: "diff-med-easy",
-            desc: "A workflow video showing how to seamlessly connect a digital to-do list with a calendar for ultimate daily organization.",
-            tools: "Google Calendar, Todoist",
-            link: "https://todoist.com"
+            t: "Fix Slow Wi-Fi on PC: Change Your DNS Settings",
+            c: "TECH", d: "Medium Easy",
+            desc: "A networking tutorial explaining what a DNS server is and why your ISP's default server is slowing you down. Shows the exact control panel steps to switch IPv4 and IPv6 settings to Cloudflare or Google DNS for lower latency.",
+            tools: "Control Panel", l: "https://1.1.1.1"
         },
         {
-            title: "Best apps for students (free only)",
-            category: "PRODUCTIVITY",
-            difficulty: "Easy",
-            diffClass: "diff-easy",
-            desc: "Curating the absolute best free software for flashcards, citation generation, and focused studying sessions.",
-            tools: "Anki, Zotero",
-            link: "https://apps.ankiweb.net"
+            t: "Why Your Laptop is Overheating (And How to Fix It)",
+            c: "TECH", d: "Medium",
+            desc: "Combines hardware advice (proper ventilation, dusting) with software fixes. Demonstrates how to dive into Windows Power Options to reduce the Maximum Processor State from 100% to 95%, drastically lowering temperatures without sacrificing noticeable speed.",
+            tools: "Windows Power Options, HWMonitor", l: "https://www.cpuid.com/softwares/hwmonitor.html"
         },
         {
-            title: "How to manage your time better",
-            category: "PRODUCTIVITY",
-            difficulty: "Easy",
-            diffClass: "diff-easy",
-            desc: "A guide on implementing the Pomodoro technique digitally to stop procrastination and avoid academic burnout.",
-            tools: "Pomofocus",
-            link: "https://pomofocus.io"
+            t: "How to Completely Uninstall Stubborn Programs",
+            c: "TECH", d: "Easy",
+            desc: "Standard uninstallers often leave behind junk registry keys and hidden app data folders. This video shows how to use a specialized uninstaller tool to forcefully remove applications and scan the system for residual files to free up deep storage.",
+            tools: "Revo Uninstaller Free", l: "https://www.revouninstaller.com"
         },
         {
-            title: "How to take notes that actually work",
-            category: "PRODUCTIVITY",
-            difficulty: "Medium",
-            diffClass: "diff-med",
-            desc: "Moving away from linear Word documents to linked, markdown-based note-taking for better retention and essay writing.",
-            tools: "Obsidian",
-            link: "https://obsidian.md"
+            t: "Instantly Free Up Storage on Windows (Hidden Files)",
+            c: "TECH", d: "Easy",
+            desc: "A guide to finding massive hidden files eating up your C: Drive. Shows how to use a visual disk space analyzer to locate forgotten games, huge cache files, and the Windows.old folder, allowing users to reclaim gigabytes of space.",
+            tools: "WizTree", l: "https://diskanalyzer.com"
         },
         {
-            title: "How to stay organized digitally",
-            category: "PRODUCTIVITY",
-            difficulty: "Medium Easy",
-            diffClass: "diff-med-easy",
-            desc: "A framework for the 'Inbox Zero' method for emails, and standardizing file naming conventions on your desktop.",
-            tools: "Gmail, File Explorer",
-            link: "None"
+            t: "How to Update Your PC Drivers the Safe Way",
+            c: "TECH", d: "Medium",
+            desc: "A warning against sketchy 'driver updater' malware, followed by the correct method. Shows how to identify your motherboard model, navigate to the official manufacturer support page, and install essential chipset and audio drivers manually.",
+            tools: "Device Manager, System Information", l: "None"
         },
         {
-            title: "Track your habits effortlessly",
-            category: "PRODUCTIVITY",
-            difficulty: "Easy",
-            diffClass: "diff-easy",
-            desc: "Setting up a simple, visually satisfying digital habit tracker to build consistency in daily routines.",
-            tools: "Loop Habit Tracker",
-            link: "https://loophabits.org"
+            t: "Revive an Old Laptop by Installing ChromeOS Flex",
+            c: "TECH", d: "Medium",
+            desc: "A step-by-step guide to turning a hopelessly slow 10-year-old Windows laptop into a lightning-fast Chromebook. Covers creating a bootable USB drive, accessing the BIOS/UEFI boot menu, and installing the lightweight operating system.",
+            tools: "Chromebook Recovery Utility", l: "https://chromeenterprise.google/os/chromeosflex/"
         },
         {
-            title: "Stop forgetting things: The GTD Method",
-            category: "PRODUCTIVITY",
-            difficulty: "Medium",
-            diffClass: "diff-med",
-            desc: "An introduction to the 'Getting Things Done' capture method using minimalist cross-platform task managers.",
-            tools: "TickTick",
-            link: "https://ticktick.com"
+            t: "How to Stop Apps from Running in the Background",
+            c: "TECH", d: "Easy",
+            desc: "A battery and RAM saving tutorial. Shows how to navigate Windows privacy settings to revoke background app permissions, and how to use the Services app to disable auto-updaters that run silently.",
+            tools: "Windows Settings, Services.msc", l: "None"
         },
         {
-            title: "Block distractions on your computer",
-            category: "PRODUCTIVITY",
-            difficulty: "Easy",
-            diffClass: "diff-easy",
-            desc: "Using strict website blockers during study hours to completely eliminate the temptation of social media.",
-            tools: "Cold Turkey Blocker",
-            link: "https://getcoldturkey.com"
+            t: "Fix a Corrupted USB Drive or SD Card",
+            c: "TECH", d: "Medium",
+            desc: "When a drive says 'You need to format the disk' or doesn't show up at all. A strict tutorial on using the Windows Command Prompt (Diskpart tool) to clean the drive, create a new primary partition, and format it to exFAT.",
+            tools: "Command Prompt (CMD)", l: "None"
         },
         {
-            title: "Mind mapping for complex projects",
-            category: "PRODUCTIVITY",
-            difficulty: "Medium Easy",
-            diffClass: "diff-med-easy",
-            desc: "Using digital whiteboards to visually break down overwhelming assignments into actionable steps.",
-            tools: "Miro",
-            link: "https://miro.com"
+            t: "How to Optimize Your GPU for Gaming",
+            c: "TECH", d: "Medium Easy",
+            desc: "A walkthrough of the NVIDIA Control Panel and AMD Software. Explains how to set power management mode to 'Prefer Maximum Performance', adjust texture filtering for competitive games, and enable low latency modes.",
+            tools: "NVIDIA Control Panel", l: "None"
+        },
+        {
+            t: "Extend Your Laptop Battery Life by 50%",
+            c: "TECH", d: "Easy",
+            desc: "A practical guide to aggressive battery management. Covers creating a custom power plan, disabling keyboard backlights on battery, lowering the display refresh rate to 60Hz, and identifying power-hungry background processes.",
+            tools: "Windows Battery Settings", l: "None"
+        },
+        {
+            t: "How to Safely Clean Your Monitor and Keyboard",
+            c: "TECH", d: "Easy",
+            desc: "Hardware maintenance tips. Explains why household glass cleaners will destroy a monitor's anti-glare coating, the correct microfiber wiping technique, and how to use isopropyl alcohol safely on keycaps.",
+            tools: "Microfiber Cloth, Distilled Water", l: "None"
+        },
+        {
+            t: "Stop Windows 11 from Spying on You",
+            c: "TECH", d: "Medium",
+            desc: "A privacy-focused setup guide. Shows how to disable personalized ads, turn off activity history, revoke microphone access for non-essential apps, and use a debloat script to remove built-in tracking telemetry.",
+            tools: "O&O ShutUp10++", l: "https://www.oo-software.com/en/shutup10"
+        },
+        {
+            t: "How to Benchmark Your PC Like a Pro",
+            c: "TECH", d: "Medium Easy",
+            desc: "Explaining how to measure a computer's actual performance. Walks through running a CPU stress test, testing 3D rendering capabilities, and checking SSD read/write speeds to ensure the hardware is performing as advertised.",
+            tools: "Cinebench, CrystalDiskMark", l: "https://crystalmark.info/en/software/crystaldiskmark/"
+        },
+        {
+            t: "Fix Bluetooth Connection Stuttering on PC",
+            c: "TECH", d: "Medium Easy",
+            desc: "Troubleshooting audio drops for wireless headphones. Shows how to disable hands-free telephony mode in the control panel, update the Bluetooth radio driver, and move away from 2.4GHz Wi-Fi interference.",
+            tools: "Control Panel, Device Manager", l: "None"
+        },
+        {
+            t: "How to Setup Dual Monitors the Right Way",
+            c: "TECH", d: "Easy",
+            desc: "A guide to multi-display productivity. Covers aligning monitor heights virtually in display settings, changing the main display, matching refresh rates, and spanning a single wallpaper perfectly across two screens.",
+            tools: "Windows Display Settings", l: "None"
+        },
+        {
+            t: "Clone Your Hard Drive to an SSD",
+            c: "TECH", d: "Medium",
+            desc: "A lifesaver tutorial for upgrading storage without reinstalling Windows. Explains how to connect a new SSD via USB enclosure, use cloning software to copy the exact partition structure, and swap the drives.",
+            tools: "Macrium Reflect Free", l: "https://www.macrium.com/reflectfree"
+        },
+        {
+            t: "How to Calibrate Your Monitor Colors",
+            c: "TECH", d: "Easy",
+            desc: "Improving visual quality for free. Walks through the built-in Windows Display Color Calibration tool to fix washed-out gamma, adjust contrast, and use ClearType to make on-screen text sharper.",
+            tools: "Windows Color Calibration", l: "None"
+        },
+        {
+            t: "Fix '100% Disk Usage' Error in Windows",
+            c: "TECH", d: "Medium",
+            desc: "Troubleshooting the most common cause of PC freezing. Explains how to disable the SysMain (Superfetch) service, turn off Windows Search indexing temporarily, and check the hard drive for physical sector errors.",
+            tools: "Services.msc, CHKDSK", l: "None"
+        },
+        {
+            t: "How to Use Your Phone as a 4K Webcam",
+            c: "TECH", d: "Medium Easy",
+            desc: "Ditching grainy laptop webcams by linking a smartphone camera to the PC via WiFi or USB. Shows the app setup, adjusting exposure settings on the phone, and selecting the virtual camera in Zoom/OBS.",
+            tools: "Camo, OBS Studio", l: "https://reincubate.com/camo/"
+        },
+
+        // --- PRODUCTIVITY (Systems, Organization, Student Life) ---
+        {
+            t: "How to Organize Your Entire Life with Notion",
+            c: "PRODUCTIVITY", d: "Medium",
+            desc: "A masterclass in digital architecture. Walks through building a personal dashboard that connects a master task database to a weekly calendar view. Explains how to use relations and rollups so tasks disappear from the inbox once checked off.",
+            tools: "Notion", l: "https://notion.so"
+        },
+        {
+            t: "The Ultimate All-in-One Setup for Creators",
+            c: "PRODUCTIVITY", d: "Medium Easy",
+            desc: "Why bouncing between five different apps kills momentum. This video explores how creators and builders can ideate, draft, and launch projects faster by consolidating their workflow into a single unified workspace, reducing friction and subscription costs.",
+            tools: "Unified AI Workspaces", l: "None"
+        },
+        {
+            t: "My Free Productivity System (Step-by-Step)",
+            c: "PRODUCTIVITY", d: "Medium Easy",
+            desc: "A practical application of the 'Capture, Organize, Do' method. Shows how to seamlessly link a quick-capture to-do list app with Google Calendar, ensuring that every task is assigned a specific block of time during the day (Timeboxing).",
+            tools: "Todoist, Google Calendar", l: "https://todoist.com"
+        },
+        {
+            t: "How to Take Notes That Actually Work (Zettelkasten)",
+            c: "PRODUCTIVITY", d: "Medium",
+            desc: "Moving away from linear, chronological note-taking. Explains the Zettelkasten method using markdown files, showing how bidirectional linking helps connect disparate ideas for writing better essays and retaining information longer.",
+            tools: "Obsidian", l: "https://obsidian.md"
+        },
+        {
+            t: "Best Apps for Students to Survive Exams",
+            c: "PRODUCTIVITY", d: "Easy",
+            desc: "A curated survival toolkit. Covers setting up an aggressive website blocker during study hours, using spaced repetition flashcards to memorize definitions, and utilizing a citation generator that actually formats correctly.",
+            tools: "Anki, Cold Turkey", l: "https://apps.ankiweb.net"
+        },
+        {
+            t: "Stop Procrastinating: The Digital Pomodoro Method",
+            c: "PRODUCTIVITY", d: "Easy",
+            desc: "A visual guide to breaking work into 25-minute sprints. Shows how to use a minimalist timer on the desktop, the psychological benefits of mandatory 5-minute breaks, and how to track deep work hours over a week.",
+            tools: "Pomofocus", l: "https://pomofocus.io"
+        },
+        {
+            t: "How to Achieve Inbox Zero Every Friday",
+            c: "PRODUCTIVITY", d: "Medium Easy",
+            desc: "A ruthless email management strategy. Demonstrates setting up automated filters for newsletters, using the snooze function for pending replies, and adopting the 'two-minute rule' to clear the main inbox down to absolutely zero items.",
+            tools: "Gmail, Outlook", l: "None"
+        },
+        {
+            t: "Track Your Habits Without Feeling Overwhelmed",
+            c: "PRODUCTIVITY", d: "Easy",
+            desc: "Designing a visual, guilt-free habit tracker. Explains why tracking only 3 core habits is better than tracking 10, and how seeing an unbroken chain of checkmarks builds the psychological momentum needed for consistency.",
+            tools: "Loop Habit Tracker", l: "https://loophabits.org"
+        },
+        {
+            t: "Mind Mapping for Complex Projects",
+            c: "PRODUCTIVITY", d: "Medium Easy",
+            desc: "A visual brainstorming session for visual thinkers. Shows how to use an infinite digital canvas to dump ideas, group them into logical clusters, and draw connections, transforming an overwhelming project into a clear action plan.",
+            tools: "Miro", l: "https://miro.com"
+        },
+        {
+            t: "The 'Getting Things Done' (GTD) Method Explained",
+            c: "PRODUCTIVITY", d: "Medium",
+            desc: "A simplified breakdown of David Allen's famous productivity framework. Focuses purely on the digital implementation: setting up an 'Inbox' for brain-dumping, a 'Next Actions' list for actionable items, and a 'Someday/Maybe' folder.",
+            tools: "TickTick", l: "https://ticktick.com"
+        },
+        {
+            t: "Automate Your Finances in 30 Minutes",
+            c: "PRODUCTIVITY", d: "Medium",
+            desc: "A stress-free approach to personal finance for freelancers and students. Shows how to set up auto-transfers for savings on payday, use digital envelopes for budgeting guilt-free spending, and track net worth simply in a spreadsheet.",
+            tools: "Google Sheets", l: "https://sheets.google.com"
+        },
+        {
+            t: "How to Read More Books (Digital Strategy)",
+            c: "PRODUCTIVITY", d: "Easy",
+            desc: "Combining audiobooks, e-readers, and reading tracking. Explains how to borrow ebooks for free digitally using a library card, and how to seamlessly highlight quotes and sync them automatically to your note-taking app.",
+            tools: "Libby, Readwise", l: "https://libbyapp.com"
+        },
+        {
+            t: "Organize Your Desktop Like a Minimalist",
+            c: "PRODUCTIVITY", d: "Easy",
+            desc: "A highly visual makeover video. Shows how to hide all desktop icons, implement a sleek hidden dock, set up an automatic file-sorting script for the Downloads folder, and choose a calming, distraction-free wallpaper.",
+            tools: "Fences (Alternative), Spotlight", l: "None"
+        },
+        {
+            t: "Create a 'Second Brain' for Content Creation",
+            c: "PRODUCTIVITY", d: "Medium",
+            desc: "How writers and YouTubers manage their ideas. Walks through a system to capture passing thoughts on mobile, organize them by project phase (Ideation, Scripting, Filming), and launch content much faster without writer's block.",
+            tools: "Evernote, Notion", l: "None"
+        },
+        {
+            t: "How to Master Keyboard Shortcuts",
+            c: "PRODUCTIVITY", d: "Easy",
+            desc: "A speed-run tutorial on navigating an OS entirely without a mouse. Covers window snapping, virtual desktop switching, instant clipboard history access, and browser tab manipulation to shave minutes off daily workflows.",
+            tools: "Windows PowerToys", l: "https://learn.microsoft.com/en-us/windows/powertoys/"
+        },
+        {
+            t: "Digital Declutter: A 30-Day Challenge",
+            c: "PRODUCTIVITY", d: "Medium Easy",
+            desc: "A structured plan to clean up digital life. Week 1 focuses on unsubscribing from emails, Week 2 on deleting unused phone apps, Week 3 on consolidating cloud storage, and Week 4 on reviewing privacy settings across social media.",
+            tools: "Unroll.me (Alternatives)", l: "None"
+        },
+        {
+            t: "How to Plan Your Semester in One Hour",
+            c: "PRODUCTIVITY", d: "Medium Easy",
+            desc: "A proactive student guide. Shows taking every syllabus on day one, entering all major exam dates and assignment deadlines into a master calendar, and setting automated reminders two weeks before each major deadline.",
+            tools: "Google Calendar", l: "None"
+        },
+        {
+            t: "The Best White Noise Apps for Deep Focus",
+            c: "PRODUCTIVITY", d: "Easy",
+            desc: "Exploring auditory environments for studying. Reviews apps that mix cafe sounds, rain, and binaural beats, explaining the science behind how constant ambient noise masks distracting sudden sounds in shared dorms or offices.",
+            tools: "Noisli, MyNoise", l: "https://mynoise.net"
+        },
+        {
+            t: "How to Journal Digitally (Without Failing)",
+            c: "PRODUCTIVITY", d: "Easy",
+            desc: "Removing the pressure of writing long diary entries. Shows how to set up a template with just three prompts (One win, one challenge, one gratitude) to build a consistent, low-friction daily reflection habit.",
+            tools: "Day One, Journey", l: "https://dayoneapp.com"
+        },
+        {
+            t: "How to Launch Projects Faster with AI",
+            c: "PRODUCTIVITY", d: "Medium",
+            desc: "A workflow for builders. Demonstrates how to use unified AI platforms to instantly generate project outlines, draft copy, and organize tasks in one place, proving that consolidated tools beat fragmented apps for rapid execution.",
+            tools: "Unified Workspaces", l: "None"
         }
     ];
 
-    const grid = document.getElementById('vault-grid');
+    const grid = document.getElementById('vault-list');
     const filterBtns = document.querySelectorAll('.filter-btn');
+    const stats = document.getElementById('vault-stats');
 
-    function renderCards(filter) {
+    function renderList(filter) {
         grid.innerHTML = '';
         const filteredData = filter === 'all' 
             ? vaultData 
-            : vaultData.filter(item => item.category === filter);
+            : vaultData.filter(item => item.c === filter);
 
-        filteredData.forEach(item => {
-            const hasLink = item.link !== "None";
+        stats.innerText = `Showing ${filteredData.length} highly descriptive ideas`;
+
+        filteredData.forEach((item, index) => {
+            const hasLink = item.l !== "None";
             const linkHtml = hasLink 
-                ? `<a href="${item.link}" target="_blank" class="card-link">Visit Resource &rarr;</a>`
-                : `<a href="#" class="card-link disabled">No Link Required</a>`;
+                ? `<a href="${item.l}" target="_blank">${item.l}</a>`
+                : `<span style="color: #888;">No external link required</span>`;
 
-            const cardHtml = `
-                <div class="card">
-                    <div class="card-header">
-                        <span class="badge ${item.category.toLowerCase()}">${item.category}</span>
-                        <div class="difficulty ${item.diffClass}">
-                            <div class="diff-dot"></div>
-                            ${item.difficulty}
-                        </div>
+            const rowHtml = `
+                <div class="row" id="row-${index}">
+                    <div class="row-header" onclick="toggleRow(${index})">
+                        <div class="badge ${item.c.toLowerCase()}">${item.c}</div>
+                        <h3 class="title">${item.t}</h3>
+                        <div class="difficulty">${item.d}</div>
                     </div>
-                    <h3 class="card-title">${item.title}</h3>
-                    <p class="card-desc">${item.desc}</p>
-                    <div class="card-meta">
-                        <div class="meta-row">
+                    <div class="row-details">
+                        <p class="desc">${item.desc}</p>
+                        <div class="meta-grid">
                             <span class="meta-label">Tools:</span>
-                            <span class="meta-value">${item.tools}</span>
+                            <span>${item.tools}</span>
+                            <span class="meta-label">Link:</span>
+                            <span class="meta-value">${linkHtml}</span>
                         </div>
                     </div>
-                    ${linkHtml}
                 </div>
             `;
-            grid.insertAdjacentHTML('beforeend', cardHtml);
+            grid.insertAdjacentHTML('beforeend', rowHtml);
         });
+    }
+
+    // Simple Accordion Logic
+    window.toggleRow = function(index) {
+        const row = document.getElementById(`row-${index}`);
+        row.classList.toggle('open');
     }
 
     // Filter Logic
@@ -558,12 +622,12 @@
         btn.addEventListener('click', () => {
             filterBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            renderCards(btn.getAttribute('data-filter'));
+            renderList(btn.getAttribute('data-filter'));
         });
     });
 
-    // Initial Render
-    renderCards('all');
+    // Initialize
+    renderList('all');
 </script>
 
 </body>
