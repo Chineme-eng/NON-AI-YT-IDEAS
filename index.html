@@ -93,6 +93,41 @@ a{color:inherit;text-decoration:none}
 /* FOOTER */
 .site-footer{text-align:center;padding:2rem;border-top:1.5px solid var(--cream3);font-size:0.8rem;color:var(--ink3)}
 
+
+.theme-toggle{padding:0.46rem 0.9rem;border-radius:100px;border:1.5px solid var(--cream3);background:white;font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:600;cursor:pointer;color:var(--ink2);transition:all 0.2s}
+.theme-toggle:hover{border-color:var(--ink3);transform:translateY(-1px)}
+body.dark-mode{
+  --cream:#191511;--cream2:#221d18;--cream3:#3A3129;
+  --ink:#F4EDE2;--ink2:#D5C7B6;--ink3:#9F907F;
+  --web-bg:#16243A;--web-border:#2F4A73;--web-color:#7DB2FF;--web-dark:#D4E6FF;
+  --tech-bg:#332113;--tech-border:#6A4321;--tech-color:#F59E66;--tech-dark:#FFE5D1;
+  --prod-bg:#132A1E;--prod-border:#2B6246;--prod-color:#6FD39A;--prod-dark:#D9F7E6;
+  --easy-bg:#173324;--easy-color:#7EE2A5;
+  --medeast-bg:#433116;--medeast-color:#F4C56C;
+  --med-bg:#431E1E;--med-color:#F29A9A;
+}
+body.dark-mode .site-header{background:#120F0C;color:#F4EDE2}
+body.dark-mode .site-header::before{background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(255,255,255,0.02) 40px,rgba(255,255,255,0.02) 41px)}
+body.dark-mode .header-eyebrow{color:#C0AF9B}
+body.dark-mode .header-sub{color:#B5A592}
+body.dark-mode .stat-pill{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.08);color:#CDBFAE}
+body.dark-mode .search-wrap input,
+body.dark-mode .filter-btn,
+body.dark-mode .theme-toggle,
+body.dark-mode .card{background:#241E18;color:var(--ink);border-color:var(--cream3)}
+body.dark-mode .search-wrap input::placeholder{color:#8F7F70}
+body.dark-mode .filter-btn.active{background:var(--ink);color:#1A1612;border-color:var(--ink)}
+body.dark-mode .filter-btn.web.active{background:var(--web-color);border-color:var(--web-color);color:#0F172A}
+body.dark-mode .filter-btn.tech.active{background:var(--tech-color);border-color:var(--tech-color);color:#2A1408}
+body.dark-mode .filter-btn.prod.active{background:var(--prod-color);border-color:var(--prod-color);color:#0F1F16}
+body.dark-mode .filter-btn.easy-f.active{background:var(--easy-color);border-color:var(--easy-color);color:#102116}
+body.dark-mode .filter-btn.medeast-f.active{background:var(--medeast-color);border-color:var(--medeast-color);color:#2A1A06}
+body.dark-mode .filter-btn.med-f.active{background:var(--med-color);border-color:var(--med-color);color:#2A0B0B}
+body.dark-mode .tool-chip{background:#1D1814;border-color:#322A22;color:var(--ink2)}
+body.dark-mode .tool-chip:hover{background:#2A231D}
+body.dark-mode .card:hover{box-shadow:0 10px 28px rgba(0,0,0,0.3)}
+body.dark-mode .site-footer{color:var(--ink3)}
+
 @media(max-width:640px){
   .toolbar{padding:0.7rem 1rem}
   .cards-grid{padding:0.5rem 1rem 3rem;grid-template-columns:1fr}
@@ -106,9 +141,9 @@ a{color:inherit;text-decoration:none}
 <header class="site-header">
   <p class="header-eyebrow">YouTube Creator Resource</p>
   <h1 class="header-title">The Content <em>Vault</em></h1>
-  <p class="header-sub">350 original video ideas across Web, Tech & Productivity — with tools, links, descriptions & difficulty ratings.</p>
+  <p class="header-sub">400 original video ideas across Web, Tech & Productivity — with tools, links, descriptions & difficulty ratings.</p>
   <div class="stats-row">
-    <div class="stat-pill"><span>350</span> Total Ideas</div>
+    <div class="stat-pill"><span>400</span> Total Ideas</div>
     <div class="stat-pill"><span>WEB</span> · <span>TECH</span> · <span>PRODUCTIVITY</span></div>
     <div class="stat-pill">Easy · Medium Easy · Medium</div>
   </div>
@@ -133,12 +168,13 @@ a{color:inherit;text-decoration:none}
     <button class="filter-btn medeast-f" data-diff="medeast" onclick="setFilter('diff','medeast',this)">Medium Easy</button>
     <button class="filter-btn med-f" data-diff="med" onclick="setFilter('diff','med',this)">Medium</button>
   </div>
-  <span class="result-count" id="resultCount">350 ideas</span>
+  <button class="theme-toggle" id="themeToggle" type="button" onclick="toggleTheme()" aria-label="Toggle dark mode">🌙 Dark</button>
+  <span class="result-count" id="resultCount">400 ideas</span>
 </div>
 
 <div id="appContainer"></div>
 
-<footer class="site-footer">Content Vault &mdash; 350 YouTube Ideas &mdash; Built for Creators</footer>
+<footer class="site-footer">Content Vault &mdash; 400 YouTube Ideas &mdash; Built for Creators</footer>
 
 <script>
 const ideas = [
@@ -515,10 +551,73 @@ const ideas = [
 {id:347,cat:'prod',sub:'Study Techniques',diff:'easy',title:'How to Make a Study Timetable That You Will Not Abandon by Week Two',desc:'Build a study timetable that accounts for real life — realistic hour estimates, built-in flexibility, contingency days, and the key mindset that the timetable serves you, not the other way around.',tools:[['Google Calendar','https://calendar.google.com'],['Notion','https://www.notion.so']]},
 {id:348,cat:'prod',sub:'Study Techniques',diff:'easy',title:'How to Use Colour Coding to Study Faster and Organize Better',desc:'Design a simple, sustainable color-coding system for notes, calendar, and files — maximum four colors with clear rules — so the visual system actually speeds up processing rather than adding noise.',tools:[['Notion','https://www.notion.so'],['Google Calendar','https://calendar.google.com'],['Mildliners or Highlighters','https://www.amazon.com']]},
 {id:349,cat:'prod',sub:'Study Techniques',diff:'easy',title:'How to Stay Ahead in Your Classes Without Burning Out',desc:'Build a staying-ahead system — weekly preview of upcoming material, pre-reading before lectures, and proactive communication — so you are always slightly ahead rather than constantly catching up.',tools:[['Notion','https://www.notion.so'],['Google Calendar','https://calendar.google.com']]},
-{id:350,cat:'prod',sub:'Study Techniques',diff:'easy',title:'How to Finish the Year Strong: End-of-Year Study Plan',desc:'A strategic final stretch plan — prioritizing remaining assessments, scheduling intensive review, managing energy, and finishing with confidence. A great seasonal video to upload before year-end exams.',tools:[['Notion','https://www.notion.so'],['Google Calendar','https://calendar.google.com'],['Anki','https://apps.ankiweb.net']]}
+{id:350,cat:'prod',sub:'Study Techniques',diff:'easy',title:'How to Finish the Year Strong: End-of-Year Study Plan',desc:'A strategic final stretch plan — prioritizing remaining assessments, scheduling intensive review, managing energy, and finishing with confidence. A great seasonal video to upload before year-end exams.',tools:[['Notion','https://www.notion.so'],['Google Calendar','https://calendar.google.com'],['Anki','https://apps.ankiweb.net']]},
+
+{id:351,cat:'web',sub:'Free Websites',diff:'easy',title:'7 Free Websites for Cleaning Up Audio Without Expensive Software',desc:'Show creators the best browser tools for removing noise, boosting voice clarity, trimming clips, and exporting cleaner sound fast. Great for beginners recording on basic mics or laptops.',tools:[['Auphonic','https://auphonic.com'],['Adobe Podcast Enhance','https://podcast.adobe.com'],['VEED','https://www.veed.io'],['Kapwing','https://www.kapwing.com']]},
+{id:352,cat:'web',sub:'Tools & Extensions',diff:'easy',title:'Best Free Bookmark Managers for People Who Save Too Many Tabs',desc:'Compare tools that help viewers save, tag, search, and organize useful links without letting their browser become chaos. Make it practical with a real setup example for research and content ideas.',tools:[['Raindrop.io','https://raindrop.io'],['Pocket','https://getpocket.com'],['Chrome Reading List','https://www.google.com/chrome']]},
+{id:353,cat:'web',sub:'Tutorials',diff:'easy',title:'How to Make a Simple FAQ Page for Your Website',desc:'Walk through building a clean FAQ page with collapsible answers, strong wording, and clear categories using free tools. Great for portfolios, businesses, and service pages that need fewer repeated questions.',tools:[['Carrd','https://carrd.co'],['Notion','https://www.notion.so'],['Google Sites','https://sites.google.com']]},
+{id:354,cat:'web',sub:'Design',diff:'easy',title:'Free Mockup Websites to Make Your Designs Look Professional',desc:'Show how to place logos, thumbnails, app screens, and posters into polished mockups for presentations, portfolios, and social media. Compare realism, speed, and template variety.',tools:[['Smartmockups','https://smartmockups.com'],['Canva','https://www.canva.com'],['MockupBro','https://mockupbro.com']]},
+{id:355,cat:'web',sub:'Free Websites',diff:'easy',title:'Best Free Websites to Test and Share Color Contrast for Accessibility',desc:'Teach creators and website owners how to check whether their text is readable and accessible using free contrast tools. Use real examples that fail and then fix them on screen.',tools:[['WebAIM Contrast Checker','https://webaim.org/resources/contrastchecker'],['Adobe Color','https://color.adobe.com'],['Coolors','https://coolors.co']]},
+{id:356,cat:'web',sub:'Tutorials',diff:'easy',title:'How to Turn a Google Doc Into a Simple Public Web Page',desc:'Show the fastest way to publish useful information online from a document without learning code. Ideal for resumes, resource pages, class notes, and quick info hubs.',tools:[['Google Docs','https://docs.google.com'],['Google Sites','https://sites.google.com']]},
+{id:357,cat:'web',sub:'AI Tools',diff:'easy',title:'Free AI Voice Tools for Scripts, Captions, and Read-Aloud',desc:'Compare browser tools that can read text aloud, help with script phrasing, and generate voice previews without forcing a subscription on day one. Emphasize practical creator use rather than hype.',tools:[['NaturalReader','https://www.naturalreaders.com'],['ElevenLabs','https://elevenlabs.io'],['CapCut Web','https://www.capcut.com']]},
+{id:358,cat:'prod',sub:'Organization',diff:'easy',title:'How to Build a Weekly Reset Checklist That Actually Keeps You Organized',desc:'Create a repeatable weekly reset system for cleaning up files, planning tasks, checking deadlines, and resetting your workspace. Great for students and creators who feel constantly behind.',tools:[['Notion','https://www.notion.so'],['Google Keep','https://keep.google.com'],['Google Calendar','https://calendar.google.com']]},
+{id:359,cat:'prod',sub:'Student Life',diff:'easy',title:'Best Free Apps for Keeping Track of Assignment Deadlines',desc:'Compare the simplest free apps and web tools for tracking homework, due dates, tests, and recurring class tasks. Show a realistic setup that a student can copy immediately.',tools:[['Todoist','https://todoist.com'],['Google Calendar','https://calendar.google.com'],['Notion','https://www.notion.so']]},
+{id:360,cat:'tech',sub:'Everyday Tech',diff:'easy',title:'How to Fix Your Laptop Fan Running Loud All the Time',desc:'Explain the most common reasons a laptop fan stays loud and how to reduce the noise through airflow, task management, browser cleanup, and power settings. Keep the advice beginner-safe.',tools:[['Task Manager','https://support.microsoft.com'],['Windows Settings','https://support.microsoft.com']]},
+{id:361,cat:'web',sub:'Tutorials',diff:'medeast',title:'How to Build a Resource Hub Page for Your Audience',desc:'Create a polished one-page hub with categorized links, featured tools, and recommended resources for YouTube viewers, clients, or students. Focus on structure that is easy to update over time.',tools:[['Notion','https://www.notion.so'],['Carrd','https://carrd.co'],['Canva','https://www.canva.com']]},
+{id:362,cat:'web',sub:'Coding for Beginners',diff:'medeast',title:'How to Add a Search Bar to a Static HTML Site',desc:'Teach beginners how to build a working search bar into a plain HTML, CSS, and JavaScript site without frameworks. Perfect for portfolios, vault pages, and documentation pages.',tools:[['VS Code','https://code.visualstudio.com'],['GitHub Pages','https://pages.github.com'],['MDN Web Docs','https://developer.mozilla.org']]},
+{id:363,cat:'web',sub:'Design',diff:'medeast',title:'How to Create a Mini Design System for Your Brand Using Free Tools',desc:'Show viewers how to lock in fonts, colors, spacing, buttons, and card styles so future designs look consistent. Great for creators building websites, thumbnails, and social graphics.',tools:[['Canva','https://www.canva.com'],['Coolors','https://coolors.co'],['Google Fonts','https://fonts.google.com']]},
+{id:364,cat:'tech',sub:'Privacy & Security',diff:'medeast',title:'How to Check Which Apps Are Tracking You on Your Browser',desc:'Walk through browser privacy settings, cookie permissions, trackers, and extension-based blocking so viewers understand what is following them online and what to turn off.',tools:[['Privacy Badger','https://privacybadger.org'],['uBlock Origin','https://ublockorigin.com'],['Google Chrome','https://www.google.com/chrome']]},
+{id:365,cat:'tech',sub:'Speed & Performance',diff:'medeast',title:'How to Find What Is Slowing Down Your Laptop Using Task Manager',desc:'Go deeper than a basic speed-up guide by teaching people how to read CPU, memory, disk, startup, and background process data and then actually act on what they find.',tools:[['Task Manager','https://support.microsoft.com'],['Resource Monitor','https://support.microsoft.com']]},
+{id:366,cat:'prod',sub:'Planning Systems',diff:'medeast',title:'How to Build a Monthly Content Calendar Without Overcomplicating It',desc:'Create a clean monthly posting system with idea capture, publishing dates, repurposing notes, and status tracking. A great workflow video for creators who want consistency without burnout.',tools:[['Google Sheets','https://sheets.google.com'],['Notion','https://www.notion.so'],['Trello','https://trello.com']]},
+{id:367,cat:'prod',sub:'Organization',diff:'medeast',title:'How to Set Up a Personal Dashboard in Notion From Scratch',desc:'Build a practical Notion dashboard with tasks, quick links, notes, calendar widgets, and goals. Keep it realistic so beginners can actually maintain it after the tutorial ends.',tools:[['Notion','https://www.notion.so']]},
+{id:368,cat:'prod',sub:'Student Life',diff:'medeast',title:'How to Build a Simple Semester Tracker for Classes and Exams',desc:'Teach students how to organize class names, assignments, exam dates, and grade checkpoints in one place so nothing gets lost mid-semester. Show both spreadsheet and Notion versions.',tools:[['Google Sheets','https://sheets.google.com'],['Notion','https://www.notion.so']]},
+{id:369,cat:'web',sub:'AI Tools',diff:'medeast',title:'How to Compare AI Answers Side by Side for Better Research',desc:'Set up a repeatable method for asking the same question to multiple AI tools, checking sources, spotting agreement, and saving the most useful parts. Position it as smarter verification, not blind trust.',tools:[['ChatGPT','https://chat.openai.com'],['Claude','https://claude.ai'],['Perplexity AI','https://www.perplexity.ai']]},
+{id:370,cat:'tech',sub:'Everyday Tech',diff:'medeast',title:'How to Organize Your Computer Files So You Can Find Everything Fast',desc:'Create a practical folder structure for downloads, projects, screenshots, school files, and media so viewers stop losing work. Include naming conventions that make search actually useful.',tools:[['File Explorer','https://support.microsoft.com'],['Finder','https://support.apple.com']]},
+{id:371,cat:'web',sub:'Tools & Extensions',diff:'medeast',title:'Best Free Tools for Collecting and Saving Web Inspiration',desc:'Compare tools for clipping screenshots, saving websites, organizing swipe files, and tagging references for future projects. Great for designers, creators, and founders.',tools:[['Raindrop.io','https://raindrop.io'],['Pinterest','https://www.pinterest.com'],['Notion Web Clipper','https://www.notion.so/web-clipper']]},
+{id:372,cat:'prod',sub:'Planning Systems',diff:'medeast',title:'How to Create a Daily Planning System That Takes Under 5 Minutes',desc:'Design a low-friction planning workflow focused on top priorities, time blocks, and carry-over tasks so viewers can stay organized without turning planning into its own job.',tools:[['Google Calendar','https://calendar.google.com'],['Todoist','https://todoist.com'],['Notion','https://www.notion.so']]},
+{id:373,cat:'tech',sub:'Privacy & Security',diff:'medeast',title:'How to Set Up Two-Factor Authentication on Everything Important',desc:'Show how to secure key accounts using authenticator apps, backup codes, and safer recovery methods. Explain why SMS alone is weaker and how to avoid locking yourself out.',tools:[['Google Authenticator','https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2'],['Authy','https://authy.com']]},
+{id:374,cat:'web',sub:'Tutorials',diff:'medeast',title:'How to Make a Clickable Resource Directory Website for Free',desc:'Build a categorized resource directory with cards, tags, search, and outbound links using only simple front-end tools. Perfect for content vaults, study resources, or niche tool libraries.',tools:[['VS Code','https://code.visualstudio.com'],['GitHub Pages','https://pages.github.com'],['Canva','https://www.canva.com']]},
+{id:375,cat:'prod',sub:'Student Life',diff:'medeast',title:'How to Use Google Calendar for School Without Missing Deadlines',desc:'Go beyond adding class times by teaching assignment reminders, color coding, recurring study blocks, exam countdowns, and notification settings that actually help.',tools:[['Google Calendar','https://calendar.google.com']]},
+{id:376,cat:'tech',sub:'Speed & Performance',diff:'medeast',title:'How to Free Up Storage on Your Laptop Without Deleting Important Stuff',desc:'Walk through large-file hunting, download cleanup, duplicate removal, cloud offloading, and safe temporary-file cleanup so viewers get real storage back without regret.',tools:[['WinDirStat','https://windirstat.net'],['Storage Settings','https://support.microsoft.com'],['Google Drive','https://drive.google.com']]},
+{id:377,cat:'web',sub:'Coding for Beginners',diff:'medeast',title:'How to Turn a Static HTML Page Into a Reusable Template',desc:'Teach beginners how to structure sections, duplicate card layouts, and separate content from styling so future projects are faster to build and easier to maintain.',tools:[['VS Code','https://code.visualstudio.com'],['CodePen','https://codepen.io'],['GitHub','https://github.com']]},
+{id:378,cat:'prod',sub:'Organization',diff:'medeast',title:'How to Build a Personal Resource Library for Everything You Learn Online',desc:'Create a system for saving useful tutorials, clips, websites, notes, and references so great information does not disappear into bookmarks and random tabs.',tools:[['Notion','https://www.notion.so'],['Raindrop.io','https://raindrop.io'],['Google Drive','https://drive.google.com']]},
+{id:379,cat:'tech',sub:'Everyday Tech',diff:'medeast',title:'How to Use Browser Profiles to Separate School, Work, and Personal Life',desc:'Show how separate browser profiles can reduce distraction, keep bookmarks clean, and organize extensions, passwords, and tabs for different parts of life.',tools:[['Google Chrome','https://www.google.com/chrome'],['Microsoft Edge','https://www.microsoft.com/edge']]},
+{id:380,cat:'web',sub:'Design',diff:'medeast',title:'How to Create Better Card Layouts for Resource Sites and Dashboards',desc:'Break down spacing, hierarchy, tag placement, visual rhythm, and hover states so viewers can make card-based websites that feel cleaner and easier to browse.',tools:[['Figma','https://www.figma.com'],['Canva','https://www.canva.com'],['CodePen','https://codepen.io']]},
+{id:381,cat:'web',sub:'Coding for Beginners',diff:'med',title:'How to Build a Filterable Card Grid With JavaScript From Scratch',desc:'Create a working card grid with category filters, difficulty filters, and search using plain JavaScript. Great intermediate project for beginners moving past static pages.',tools:[['VS Code','https://code.visualstudio.com'],['MDN Web Docs','https://developer.mozilla.org'],['GitHub Pages','https://pages.github.com']]},
+{id:382,cat:'tech',sub:'Privacy & Security',diff:'med',title:'How to Lock Down Your Browser for Maximum Privacy Without Breaking Everything',desc:'Teach a balanced privacy setup with tracker blocking, third-party cookie controls, safer search, permissions management, and sensible defaults that do not ruin normal browsing.',tools:[['Firefox','https://www.mozilla.org/firefox'],['uBlock Origin','https://ublockorigin.com'],['Privacy Badger','https://privacybadger.org']]},
+{id:383,cat:'prod',sub:'Planning Systems',diff:'med',title:'How to Build a Full Creator Workflow From Idea to Upload',desc:'Map the entire process from idea capture to script, recording, editing, thumbnail, upload, and repurposing so creators can stop improvising every video from scratch.',tools:[['Notion','https://www.notion.so'],['Google Drive','https://drive.google.com'],['Trello','https://trello.com']]},
+{id:384,cat:'web',sub:'Tutorials',diff:'med',title:'How to Design a Resource Website That Scales Past 300 Cards',desc:'Explain the structure, search logic, filtering strategy, and visual organization needed when a resource website grows large enough that layout and discoverability start to matter a lot.',tools:[['VS Code','https://code.visualstudio.com'],['GitHub Pages','https://pages.github.com'],['Figma','https://www.figma.com']]},
+{id:385,cat:'tech',sub:'Speed & Performance',diff:'med',title:'How to Benchmark Your Laptop Before and After Optimizing It',desc:'Teach viewers how to measure boot time, app launch time, browser memory use, and storage performance before changing anything so they can prove whether their optimizations worked.',tools:[['Task Manager','https://support.microsoft.com'],['CrystalDiskMark','https://crystalmark.info'],['Browser Task Manager','https://www.google.com/chrome']]},
+{id:386,cat:'prod',sub:'Organization',diff:'med',title:'How to Build a Personal Knowledge System That You Will Still Use Six Months Later',desc:'Focus on sustainability over complexity by teaching capture, review, retrieval, and archiving rules that keep a second-brain system from becoming a digital junk drawer.',tools:[['Notion','https://www.notion.so'],['Obsidian','https://obsidian.md'],['Google Drive','https://drive.google.com']]},
+{id:387,cat:'web',sub:'AI Tools',diff:'med',title:'How to Use AI to Audit and Improve Your Existing Website Content',desc:'Show how to review weak headlines, vague descriptions, missing calls to action, and inconsistent structure using AI as an editor while still making final decisions yourself.',tools:[['ChatGPT','https://chat.openai.com'],['Claude','https://claude.ai'],['Google Docs','https://docs.google.com']]},
+{id:388,cat:'tech',sub:'Everyday Tech',diff:'med',title:'How to Set Up a Clean New-Laptop Workflow the Smart Way',desc:'Walk through the best order for updates, browser setup, file structure, security, cloud sync, and essential apps when someone gets a new laptop and wants to avoid digital clutter from day one.',tools:[['Windows Settings','https://support.microsoft.com'],['Google Drive','https://drive.google.com'],['Bitwarden','https://bitwarden.com']]},
+{id:389,cat:'prod',sub:'Planning Systems',diff:'med',title:'How to Build a Time-Blocked Week That Still Has Flexibility',desc:'Teach viewers how to combine time blocking with overflow blocks, theme days, and realistic workload estimates so the calendar guides them without feeling like a prison.',tools:[['Google Calendar','https://calendar.google.com'],['Notion','https://www.notion.so']]},
+{id:390,cat:'web',sub:'Coding for Beginners',diff:'med',title:'How to Refactor a Messy Front-End Project Without Starting Over',desc:'Show practical cleanup steps like renaming classes, grouping styles, reducing duplication, organizing scripts, and separating reusable pieces so beginners learn maintenance, not just building.',tools:[['VS Code','https://code.visualstudio.com'],['GitHub','https://github.com'],['CodePen','https://codepen.io']]},
+{id:391,cat:'web',sub:'AI Tools',diff:'easy',title:'Best Free AI Tools for Turning Long Notes Into Cleaner Summaries',desc:'Test tools that compress messy notes, lecture dumps, and rough brainstorms into readable summaries without losing the important points. Great for students and creators working from raw text.',tools:[['Claude','https://claude.ai'],['ChatGPT','https://chat.openai.com'],['Notion AI','https://www.notion.so']]},
+{id:392,cat:'tech',sub:'Everyday Tech',diff:'easy',title:'How to Fix Bluetooth Devices Randomly Disconnecting on Your Laptop',desc:'Cover the beginner-safe fixes for flaky Bluetooth headphones, mice, and keyboards including drivers, battery checks, interference, and power-saving settings.',tools:[['Windows Settings','https://support.microsoft.com'],['Device Manager','https://support.microsoft.com']]},
+{id:393,cat:'prod',sub:'Student Life',diff:'easy',title:'How to Make a Clean Digital Notes Setup for School',desc:'Compare a simple, low-maintenance note setup using folders, naming rules, quick templates, and review habits so students stop scattering notes across random apps.',tools:[['Google Docs','https://docs.google.com'],['Notion','https://www.notion.so'],['Google Drive','https://drive.google.com']]},
+{id:394,cat:'web',sub:'Free Websites',diff:'easy',title:'Best Free Websites for Finding Open Source Icons, Illustrations, and UI Assets',desc:'Round up the best legal sources for downloadable visual assets that creators can use in websites, decks, dashboards, and thumbnails. Clarify the difference between free, attribution, and open source.',tools:[['Heroicons','https://heroicons.com'],['unDraw','https://undraw.co'],['Icons8','https://icons8.com'],['Lucide','https://lucide.dev']]},
+{id:395,cat:'prod',sub:'Organization',diff:'easy',title:'How to Create a Simple Capture System for Ideas Before You Forget Them',desc:'Teach a lightweight way to catch random ideas instantly and sort them later so creative thoughts do not disappear. Focus on speed, low friction, and one trusted inbox.',tools:[['Google Keep','https://keep.google.com'],['Notion','https://www.notion.so'],['Apple Notes','https://www.apple.com/ios/notes/']]},
+{id:396,cat:'web',sub:'Tools & Extensions',diff:'easy',title:'Best Free Website Screenshot Tools for Full Pages and Quick Mockups',desc:'Compare browser and web tools that capture clean screenshots of full websites, selected sections, and mobile views for references, audits, and presentations.',tools:[['GoFullPage','https://gofullpage.com'],['Awesome Screenshot','https://www.awesomescreenshot.com'],['Canva','https://www.canva.com']]},
+{id:397,cat:'tech',sub:'Privacy & Security',diff:'easy',title:'How to Check Which Permissions Your Browser Has Given to Sites',desc:'Show how to review and reset camera, mic, notification, location, and clipboard permissions so random websites are not quietly holding access they do not need.',tools:[['Google Chrome','https://www.google.com/chrome'],['Microsoft Edge','https://www.microsoft.com/edge'],['Firefox','https://www.mozilla.org/firefox']]},
+{id:398,cat:'prod',sub:'Planning Systems',diff:'easy',title:'How to Build a Tiny Habit Tracker You Will Actually Keep Using',desc:'Create a simple habit system focused on consistency, visual progress, and low maintenance instead of overwhelming dashboards. Keep it realistic for people who usually quit after a week.',tools:[['Google Sheets','https://sheets.google.com'],['Notion','https://www.notion.so']]},
+{id:399,cat:'web',sub:'Tutorials',diff:'easy',title:'How to Make a Link Library Page for Your Favorite Tools',desc:'Build a simple page of recommended tools with categories, short descriptions, and direct links that feels polished enough to share publicly. Perfect for creators, teachers, and community builders.',tools:[['Carrd','https://carrd.co'],['Notion','https://www.notion.so'],['Canva','https://www.canva.com']]},
+{id:400,cat:'tech',sub:'Everyday Tech',diff:'easy',title:'How to Clean Up Your Downloads Folder Without Losing Important Files',desc:'Teach a practical routine for sorting, renaming, archiving, and deleting download clutter so viewers can keep their laptop cleaner and find files much faster in the future.',tools:[['File Explorer','https://support.microsoft.com'],['Finder','https://support.apple.com']]}
+
 ];
 
+
 let catFilter='all', diffFilter='all';
+
+function normalizeText(str){
+  return (str||'')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-z0-9\s]/g,' ')
+    .replace(/\s+/g,' ')
+    .trim();
+}
 
 function setFilter(type, value, btn){
   if(type==='cat'){
@@ -533,15 +632,24 @@ function setFilter(type, value, btn){
 }
 
 function applyFilters(){
-  const q=document.getElementById('searchInput').value.toLowerCase().trim();
+  const rawQuery=document.getElementById('searchInput').value.trim();
+  const terms=normalizeText(rawQuery).split(' ').filter(Boolean);
   const filtered=ideas.filter(i=>{
     const matchCat=catFilter==='all'||i.cat===catFilter;
     const matchDiff=diffFilter==='all'||i.diff===diffFilter;
-    const matchSearch=!q||
-      i.title.toLowerCase().includes(q)||
-      i.desc.toLowerCase().includes(q)||
-      i.sub.toLowerCase().includes(q)||
-      i.tools.some(t=>t[0].toLowerCase().includes(q));
+    const searchable=[
+      i.id,
+      i.title,
+      i.desc,
+      i.sub,
+      i.cat,
+      catLabel(i.cat),
+      diffLabel(i.diff),
+      ...i.tools.map(t=>t[0]),
+      ...i.tools.map(t=>t[1])
+    ].join(' ');
+    const haystack=normalizeText(searchable);
+    const matchSearch=!terms.length||terms.every(term=>haystack.includes(term));
     return matchCat&&matchDiff&&matchSearch;
   });
   render(filtered);
@@ -558,9 +666,11 @@ function render(list){
     container.innerHTML='<div class="cards-grid"><div class="no-results"><h3>No ideas found</h3><p>Try a different search term or filter combination.</p></div></div>';
     return;
   }
-  // Group by category
   const groups={web:[],tech:[],prod:[]};
-  list.forEach(i=>groups[i.cat].push(i));
+  list.forEach(i=>{
+    if(groups[i.cat]) groups[i.cat].push(i);
+  });
+
   const catNames={web:'Web — Websites, Tools & Tutorials',tech:'Tech — Fixes, Speed & Optimization',prod:'Productivity — Systems, Organization & Student Life'};
   const catDots={web:'#2563EB',tech:'#C2410C',prod:'#15803D'};
   let html='';
@@ -589,7 +699,23 @@ function render(list){
   container.innerHTML=html;
 }
 
+function applySavedTheme(){
+  const saved=localStorage.getItem('contentVaultTheme');
+  const isDark=saved==='dark';
+  document.body.classList.toggle('dark-mode', isDark);
+  document.getElementById('themeToggle').textContent=isDark?'☀️ Light':'🌙 Dark';
+}
+
+function toggleTheme(){
+  const willBeDark=!document.body.classList.contains('dark-mode');
+  document.body.classList.toggle('dark-mode', willBeDark);
+  localStorage.setItem('contentVaultTheme', willBeDark?'dark':'light');
+  document.getElementById('themeToggle').textContent=willBeDark?'☀️ Light':'🌙 Dark';
+}
+
+applySavedTheme();
 render(ideas);
+applyFilters();
 </script>
 </body>
 </html>
